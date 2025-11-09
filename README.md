@@ -39,5 +39,43 @@ The LSTM model uses tokenized text inputs and predicts the category in real-time
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/news-classifier-lstm.git
-cd news-classifier-lstm
+git clone https://github.com/dvjgpta/LSTM-based-news-classifier-gcp-deploy.git
+cd LSTM-based-news-classifier-gcp-deploy
+```
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate
+```
+or conda:
+```bash
+conda create -n myenv
+conda activate myenv
+```
+3.Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+4. Ensure model.pt and vocab.pth are in the models/ directory.or you can train LSTM model using this [Link](https://github.com/dvjgpta/LSTM)
+5 .Run the Flask app locally:
+```bash
+python app.py
+```
+###Docker Deployment
+1. Make sure Docker is installed using:
+```bash
+pip install docker
+```
+2.Build the Docker image:
+```bash
+docker build -t news-lstm-app .
+```
+3. Run the container locally:
+```bash
+docker run -p 5000:5000 news-lstm-app
+```
+
+
+The project is hosted on Google Cloud platform and can be accessed using this [link](https://newsclassifier-app-1096413105645.us-central1.run.app)
+
