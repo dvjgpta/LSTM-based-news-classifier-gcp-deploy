@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AG News Classifier</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <h1>📰 News Classifier</h1>
+      <p>Enter a news headline or paragraph to see its category prediction (World, Sports, Business, or Sci/Tech).</p>
+    </header>
+
+    <section class="input-section">
+      <textarea id="textInput" placeholder="Type or paste news text here..."></textarea>
+      <button id="classifyBtn">Classify News</button>
+    </section>
+
+    <section id="outputSection" class="hidden">
+      <h2>Prediction Result</h2>
+      <div id="predictionBox" class="prediction-box">—</div>
+    </section>
+  </div>
+
+  <script>
+    const API_URL = `${window.location.origin}/predict`; // Automatically uses current host
+  
+    document.getElementById("classifyBtn").addEventListener("click", async () => {
+      const text = document.getElementById("textInput").value.trim();
+      if (!text) {
+        alert("Please enter some text!");
+        return;
+      }
+  
+      const btn = document.getElementById("classifyBtn");
+      btn.disabled = true;
+      btn.innerText = "Classifying...";
+  
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text }),
+        });
+  
+        const data = await response.json();
+        document.getElementById("outputSection").classList.remove("hidden");
+        document.getElementById("predictionBox").innerText = data.label || "No prediction available";
+      } catch (err) {
+        console.error(err);
+        alert("Error connecting to the server.");
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Classify News";
+      }
+    });
+  </script>
+  
+</body>
+</html>
